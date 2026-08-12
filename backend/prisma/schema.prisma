@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ScheduleFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum OutputFormat {
+  PDF
+  EXCEL
+}
+
+enum Status {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum ReportType {
+  ORDERS_SUMMARY
+}
+
+model ReportTemplate {
+  id                String            @id @default(uuid())
+  name              String
+  reportType        ReportType        @default(ORDERS_SUMMARY) @map("report_type")
+  scheduleFrequency ScheduleFrequency @map("schedule_frequency")
+  specificTimeToRun DateTime          @map("specific_time_to_run") @db.Time
+  dayOfWeek         Int?              @map("day_of_week")
+  outputFormat      OutputFormat      @map("ouput_format")
+  isActive          Boolean           @default(true) @map("is_active")
+  reportRuns        ReportRun[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("report_templates")
+}
+
+model ReportRun {
+  id               String         @id @default(uuid())
+  status           Status
+  filePath         String?        @map("file_path")
+  errorMessage     String?        @map("error_message")
+  runStarted       DateTime       @map("run_started")
+  runEnded         DateTime?      @map("run_ended")
+  reportTemplateId String // Relation scalar field (Foreign Key in database) @map("report_template_id)
+  reportTemplate   ReportTemplate @relation(fields: [reportTemplateId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("report_run")
+}
