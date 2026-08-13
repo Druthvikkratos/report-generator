@@ -4,6 +4,7 @@ import { ReportTemplate } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { buildCornExpression } from './cron-expression.util';
 import { CronJob } from 'cron';
+import { ReportGeneratorService } from './report-generator.service';
 
 @Injectable()
 export class ReportSchedulerService implements OnModuleInit{
@@ -11,7 +12,9 @@ export class ReportSchedulerService implements OnModuleInit{
     private readonly logger = new Logger(ReportSchedulerService.name);
     private readonly jobPrefix = 'report-template';
 
-    constructor(private prismaService: PrismaService, private scheduleRegistry: SchedulerRegistry){
+    constructor(private prismaService: PrismaService, private scheduleRegistry: SchedulerRegistry,
+        private reportGenerator: ReportGeneratorService
+    ){
     }
 
     async onModuleInit(){
@@ -35,6 +38,7 @@ export class ReportSchedulerService implements OnModuleInit{
         const cronExpression = buildCornExpression(template.scheduleFrequency, template.specificTimeToRun, template.dayOfWeek);
         const job = new CronJob(cronExpression, () => {
             this.logger.log(`Triggered scheduled run for template ${template.id} (${template.name})`)
+            this.reportGenerator.generate(template)
         })
 
         this.scheduleRegistry.addCronJob(jobName, job)

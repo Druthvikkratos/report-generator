@@ -63,3 +63,6 @@ playwright-report/
 # Misc
 *.swp
 *.swo
+
+generated-reports/*
+!generated-reports/.gitkeep
