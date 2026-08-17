@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ReportsModule } from './reports/reports.module';
+import { ReportTemplateModule } from './report-template/report-template.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ReportsModule } from './reports/reports.module';
     ScheduleModule.forRoot(),
     PrismaModule,
     ReportsModule,
+    ReportTemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
