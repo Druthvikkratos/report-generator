@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ReportsModule } from './reports/reports.module';
 import { ReportTemplateModule } from './report-template/report-template.module';
+import { ReportRunsModule } from './report-runs/report-runs.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ReportTemplateModule } from './report-template/report-template.module';
     PrismaModule,
     ReportsModule,
     ReportTemplateModule,
+    ReportRunsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
