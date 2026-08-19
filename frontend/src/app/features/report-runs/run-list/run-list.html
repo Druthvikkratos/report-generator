@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Report Run History</h4>
+  <span class="text-muted small">
+    @if (isRefreshing()) {
+      <span class="spinner-border spinner-border-sm me-1"></span>
+    }
+    Auto-refreshing every 5s
+  </span>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    @if (runs().length === 0) {
+      <p class="text-muted text-center py-4 mb-0">No report runs yet.</p>
+    } @else {
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Template</th>
+            <th>Status</th>
+            <th>Started</th>
+            <th>Ended</th>
+            <th>Error</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (run of runs(); track run.id) {
+            <tr>
+              <td>{{ run.reportTemplate?.name || '—' }}</td>
+              <td><span class="status-badge" [class]="statusClass(run.status)">{{ run.status }}</span></td>
+              <td>{{ run.runStarted | date: 'medium' }}</td>
+              <td>{{ run.runEnded ? (run.runEnded | date: 'medium') : '—' }}</td>
+              <td class="small text-danger">{{ run.errorMessage || '—' }}</td>
+              <td class="text-end">
+                @if (run.status === 'SUCCESS') {
+                  <a [href]="downloadUrl(run.id)" class="btn btn-sm btn-outline-primary" download>
+                    <i class="bi bi-download"></i>
+                  </a>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
