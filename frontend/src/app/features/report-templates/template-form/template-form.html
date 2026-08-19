@@ -1,0 +1,74 @@
+<div class="modal-backdrop-custom" (click)="onCancel()"></div>
+<div class="modal-panel">
+  <div class="card shadow" style="width: 480px;">
+    <div class="card-body p-4">
+      <h5 class="mb-3">{{ editingTemplate() ? 'Edit' : 'New' }} Report Template</h5>
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger py-2 small">{{ errorMessage() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Weekly Orders Summary" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Report Type</label>
+          <select class="form-select" formControlName="reportType">
+            <option value="ORDERS_SUMMARY">Orders Summary</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">Frequency</label>
+            <select class="form-select" formControlName="scheduleFrequency">
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+            </select>
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">Time (24h)</label>
+            <input type="time" class="form-control" formControlName="specificTimeToRun" />
+          </div>
+        </div>
+
+        @if (showDaysOfWeek) {
+          <div class="mb-3">
+            <label class="form-label">Day of Week</label>
+            <select class="form-select" formControlName="dayOfWeek">
+              <option [value]="1">Monday</option>
+              <option [value]="2">Tuesday</option>
+              <option [value]="3">Wednesday</option>
+              <option [value]="4">Thursday</option>
+              <option [value]="5">Friday</option>
+              <option [value]="6">Saturday</option>
+              <option [value]="0">Sunday</option>
+            </select>
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label">Output Format</label>
+          <select class="form-select" formControlName="outputFormat">
+            <option value="PDF">PDF</option>
+            <option value="EXCEL">Excel</option>
+          </select>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading()">
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            }
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

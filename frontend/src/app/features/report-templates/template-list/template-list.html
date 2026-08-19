@@ -1,0 +1,89 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">Report Templates</h4>
+  <button class="btn btn-primary btn-sm" (click)="onCreateNew()">
+    <i class="bi bi-plus-lg me-1"></i>
+    New Template
+  </button>
+</div>
+
+<div class="mb-3 position-relative">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search by name..."
+    [formControl]="searchControl"
+  />
+  @if (searchLoading()) {
+    <span class="spinner-border spinner-border-sm position-absolute" style="right: 12px; top: 10px;"></span>
+  }
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    @if (loading()) {
+      <div class="d-flex justify-content-center py-4">
+        <div class="spinner-border text-primary"></div>
+      </div>
+    } @else if (templates().length === 0) {
+      <p class="text-muted text-center py-4 mb-0">No report templates yet.</p>
+    } @else {
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Frequency</th>
+            <th>Time</th>
+            <th>Format</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (template of templates(); track template.id) {
+            <tr>
+              <td>{{ template.name }}</td>
+              <td>{{ template.scheduleFrequency }}</td>
+              <td>{{ template.specificTimeToRun }}</td>
+              <td>{{ template.outputFormat }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.bg-success]="template.isActive"
+                  [class.bg-secondary]="!template.isActive"
+                >
+                  {{ template.isActive ? 'Active' : 'Paused' }}
+                </span>
+              </td>
+              <td class="text-end">
+                <button
+                  class="btn btn-sm btn-outline-secondary me-1"
+                  (click)="onToggleStatus(template)"
+                >
+                  <i
+                    class="bi"
+                    [class.bi-pause-fill]="template.isActive"
+                    [class.bi-play-fill]="!template.isActive"
+                  ></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="onEdit(template)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="onDelete(template)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+@if (showForm()) {
+  <app-template-form
+    [editingTemplate]="editingTemplate()"
+    (saved)="onFormSaved()"
+    (cancelled)="onFormCancelled()"
+  />
+}

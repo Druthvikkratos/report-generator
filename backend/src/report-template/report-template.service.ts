@@ -130,10 +130,11 @@ export class ReportTemplateService {
     }
   }
 
-  async findAllReportTemplate(): Promise<ReportTemplate[]> {
+  async findAllReportTemplate(search?: string): Promise<ReportTemplate[]> {
     this.logger.log('Fetching all report templates');
     try {
       const reportTemplates = await this.prismaService.reportTemplate.findMany({
+        where: search ? {name : {contains: search, mode: 'insensitive'}}: {},
         orderBy: {
           createdAt: 'desc',
         },

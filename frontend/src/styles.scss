@@ -1,1 +1,89 @@
-/* You can add global styles to this file, and also import other style files */
+// LedgerRecon global theme
+:root {
+  --lr-primary: #1e3a5f;
+  --lr-primary-light: #2c5282;
+  --lr-accent: #0d9488;
+  --lr-danger: #dc2626;
+  --lr-warning: #d97706;
+  --lr-success: #16a34a;
+  --lr-bg: #f8fafc;
+  --lr-border: #e2e8f0;
+}
+
+body {
+  background-color: var(--lr-bg);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  border: 1px solid var(--lr-border);
+  border-radius: 0.5rem;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.status-matched {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-discrepancy {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-unmatched {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-primary {
+  background-color: var(--lr-primary);
+  border-color: var(--lr-primary);
+
+  &:hover {
+    background-color: var(--lr-primary-light);
+    border-color: var(--lr-primary-light);
+  }
+}
+
+.active-nav-link {
+  background-color: #eff6ff;
+  color: var(--lr-primary) !important;
+  font-weight: 500;
+}
+
+.nav-link {
+  color: #475569;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f1f5f9;
+  }
+}
+
+.dropzone {
+  border: 2px dashed var(--lr-border);
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  background-color: white;
+  transition: all 0.15s ease;
+
+  &.dropzone-active {
+    border-color: var(--lr-accent);
+    background-color: #f0fdfa;
+  }
+}

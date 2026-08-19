@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   ReportTemplateResponse,
@@ -27,8 +28,8 @@ export class ReportTemplateController {
   }
 
   @Get()
-  getAllReportTemplates(): Promise<ReportTemplate[]> {
-    return this.reportTemplateService.findAllReportTemplate();
+  getAllReportTemplates(@Query('search') search?: string): Promise<ReportTemplate[]> {
+    return this.reportTemplateService.findAllReportTemplate(search);
   }
 
   @Get('/:id')
