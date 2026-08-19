@@ -55,4 +55,13 @@ export class ReportTemplateService {
     const params = query ? `?search=${encodeURIComponent(query)}` : '';
     return this.http.get<ReportTemplate[]>(`${this.baseUrl}${params}`);
   }
+
+  toggleStatusObservable(
+    id: string,
+  ): Observable<{ message: string; reportTemplate: ReportTemplate }> {
+    return this.http.patch<{ message: string; reportTemplate: ReportTemplate }>(
+      `${this.baseUrl}/${id}/toggle-status`,
+      {},
+    );
+  }
 }

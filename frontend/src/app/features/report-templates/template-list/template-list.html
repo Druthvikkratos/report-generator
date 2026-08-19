@@ -7,29 +7,39 @@
 </div>
 
 <div class="mb-3 position-relative">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Search by name..."
-    [formControl]="searchControl"
-  />
+  <input type="text" class="form-control" placeholder="Search by name..." [formControl]="searchControl" />
   @if (searchLoading()) {
     <span class="spinner-border spinner-border-sm position-absolute" style="right: 12px; top: 10px;"></span>
   }
 </div>
 
+@if (selectedIds().size > 0) {
+  <div class="alert alert-info d-flex justify-content-between align-items-center py-2">
+    <span>{{ selectedIds().size }} selected</span>
+    <button
+      class="btn btn-sm btn-outline-primary"
+      [disabled]="bulkToggling()"
+      (click)="bulkToggleSelected()"
+    >
+      @if (bulkToggling()) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+        Toggling {{ bulkProgress()?.done }}/{{ bulkProgress()?.total }}...
+      } @else {
+        Toggle Status for Selected
+      }
+    </button>
+  </div>
+}
+
 <div class="card">
   <div class="card-body p-0">
-    @if (loading()) {
-      <div class="d-flex justify-content-center py-4">
-        <div class="spinner-border text-primary"></div>
-      </div>
-    } @else if (templates().length === 0) {
+    @if (templates().length === 0) {
       <p class="text-muted text-center py-4 mb-0">No report templates yet.</p>
     } @else {
       <table class="table table-hover mb-0">
         <thead class="table-light">
           <tr>
+            <th style="width: 40px;"></th>
             <th>Name</th>
             <th>Frequency</th>
             <th>Time</th>
@@ -41,29 +51,26 @@
         <tbody>
           @for (template of templates(); track template.id) {
             <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="isSelected(template.id)"
+                  (change)="toggleSelection(template.id)"
+                />
+              </td>
               <td>{{ template.name }}</td>
               <td>{{ template.scheduleFrequency }}</td>
               <td>{{ template.specificTimeToRun }}</td>
               <td>{{ template.outputFormat }}</td>
               <td>
-                <span
-                  class="badge"
-                  [class.bg-success]="template.isActive"
-                  [class.bg-secondary]="!template.isActive"
-                >
+                <span class="badge" [class.bg-success]="template.isActive" [class.bg-secondary]="!template.isActive">
                   {{ template.isActive ? 'Active' : 'Paused' }}
                 </span>
               </td>
               <td class="text-end">
-                <button
-                  class="btn btn-sm btn-outline-secondary me-1"
-                  (click)="onToggleStatus(template)"
-                >
-                  <i
-                    class="bi"
-                    [class.bi-pause-fill]="template.isActive"
-                    [class.bi-play-fill]="!template.isActive"
-                  ></i>
+                <button class="btn btn-sm btn-outline-secondary me-1" (click)="onToggleStatus(template)">
+                  <i class="bi" [class.bi-pause-fill]="template.isActive" [class.bi-play-fill]="!template.isActive"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-primary me-1" (click)="onEdit(template)">
                   <i class="bi bi-pencil"></i>
@@ -81,9 +88,5 @@
 </div>
 
 @if (showForm()) {
-  <app-template-form
-    [editingTemplate]="editingTemplate()"
-    (saved)="onFormSaved()"
-    (cancelled)="onFormCancelled()"
-  />
-}
+  <app-template-form [editingTemplate]="editingTemplate()" (saved)="onFormSaved()" (cancelled)="onFormCancelled()" />
+}   
