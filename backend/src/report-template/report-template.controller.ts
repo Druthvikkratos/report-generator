@@ -16,9 +16,11 @@ import { CreateReportTemplateDto } from './create-report-template.dto';
 import { ReportTemplate } from '@prisma/client';
 import { UpdateReportTemplateDto } from './update-report-template.dto';
 
+
 @Controller('report-templates')
 export class ReportTemplateController {
-  constructor(private readonly reportTemplateService: ReportTemplateService) {}
+  constructor(private readonly reportTemplateService: ReportTemplateService,
+  ) {}
 
   @Post()
   async createTemplate(
@@ -56,4 +58,6 @@ export class ReportTemplateController {
   ): Promise<{ message: string; reportTemplate: ReportTemplate }> {
     return this.reportTemplateService.toggleStatus(id);
   }
+
+
 }

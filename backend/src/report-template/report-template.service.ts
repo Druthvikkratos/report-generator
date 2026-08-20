@@ -17,6 +17,7 @@ import {
   ScheduleFrequency,
 } from '@prisma/client';
 import { UpdateReportTemplateDto } from './update-report-template.dto';
+import { ReportGeneratorService } from 'src/reports/report-generator.service';
 
 export interface ReportTemplateResponse {
   id: string;
@@ -38,6 +39,7 @@ export class ReportTemplateService {
   constructor(
     private prismaService: PrismaService,
     private reportSchedulerService: ReportSchedulerService,
+    private readonly reportGeneratorService: ReportGeneratorService
   ) {}
 
   //   async createReportTemplate(
@@ -311,5 +313,11 @@ export class ReportTemplateService {
 
   formatTime(date: Date): string {
     return date.toISOString().substring(11, 16);
+  }
+
+  async triggerNow(id: string){
+    const template = await this.getReportTemplateById(id)
+    this.reportGeneratorService.generate(template)
+    return { message: 'Report generation triggered' };
   }
 }

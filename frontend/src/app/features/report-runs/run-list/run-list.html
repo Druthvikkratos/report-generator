@@ -8,6 +8,24 @@
   </span>
 </div>
 
+@if (selectedIds().size > 0) {
+  <div class="alert alert-info d-flex justify-content-between align-items-center py-2">
+    <span>{{ selectedIds().size }} selected ({{ selectedDownloadableCount }} downloadable)</span>
+    <button
+      class="btn btn-sm btn-outline-primary"
+      [disabled]="isDownloading() || selectedDownloadableCount === 0"
+      (click)="bulkDownloadSelected()"
+    >
+      @if (isDownloading()) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+        isDownloading {{ downloadProgress()?.done }}/{{ downloadProgress()?.total }}...
+      } @else {
+        Download Selected
+      }
+    </button>
+  </div>
+}
+
 <div class="card">
   <div class="card-body p-0">
     @if (runs().length === 0) {
@@ -16,6 +34,7 @@
       <table class="table table-hover mb-0">
         <thead class="table-light">
           <tr>
+            <th style="width: 40px;"></th>
             <th>Template</th>
             <th>Status</th>
             <th>Started</th>
@@ -27,8 +46,18 @@
         <tbody>
           @for (run of runs(); track run.id) {
             <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="isSelected(run.id)"
+                  (change)="toggleSelection(run.id)"
+                />
+              </td>
               <td>{{ run.reportTemplate?.name || '—' }}</td>
-              <td><span class="status-badge" [class]="statusClass(run.status)">{{ run.status }}</span></td>
+              <td>
+                <span class="status-badge" [class]="statusClass(run.status)">{{ run.status }}</span>
+              </td>
               <td>{{ run.runStarted | date: 'medium' }}</td>
               <td>{{ run.runEnded ? (run.runEnded | date: 'medium') : '—' }}</td>
               <td class="small text-danger">{{ run.errorMessage || '—' }}</td>
