@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--rg-primary)">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+      <i class="bi bi-file-earmark-bar-graph"></i>
+      Report Generator
+    </a>
+
+    <div class="navbar-nav flex-row gap-1">
+      <a
+        class="nav-link px-3 py-2 rounded"
+        routerLink="/"
+        routerLinkActive="active-nav-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="bi bi-speedometer2 me-1"></i>
+        Dashboard
+      </a>
+
+      <a
+        class="nav-link px-3 py-2 rounded"
+        routerLink="/templates"
+        routerLinkActive="active-nav-link"
+      >
+        <i class="bi bi-file-earmark-text me-1"></i>
+        Templates
+      </a>
+
+      <a class="nav-link px-3 py-2 rounded" routerLink="/runs" routerLinkActive="active-nav-link">
+        <i class="bi bi-clock-history me-1"></i>
+        Run History
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main class="container-fluid px-4 py-4" style="background-color: var(--rg-bg); min-height: calc(100vh - 56px);">
+  <router-outlet />
+</main>

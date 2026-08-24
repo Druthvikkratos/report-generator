@@ -1,17 +1,16 @@
-// LedgerRecon global theme
 :root {
-  --lr-primary: #1e3a5f;
-  --lr-primary-light: #2c5282;
-  --lr-accent: #0d9488;
-  --lr-danger: #dc2626;
-  --lr-warning: #d97706;
-  --lr-success: #16a34a;
-  --lr-bg: #f8fafc;
-  --lr-border: #e2e8f0;
+  --rg-primary: #1e3a5f;
+  --rg-primary-light: #2c5282;
+  --rg-accent: #7c3aed;
+  --rg-danger: #dc2626;
+  --rg-warning: #d97706;
+  --rg-success: #16a34a;
+  --rg-bg: #f8fafc;
+  --rg-border: #e2e8f0;
 }
 
 body {
-  background-color: var(--lr-bg);
+  background-color: var(--rg-bg);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
@@ -21,8 +20,34 @@ body {
 }
 
 .card {
-  border: 1px solid var(--lr-border);
+  border: 1px solid var(--rg-border);
   border-radius: 0.5rem;
+}
+
+.active-nav-link {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.75);
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+}
+
+.btn-primary {
+  background-color: var(--rg-primary);
+  border-color: var(--rg-primary);
+
+  &:hover {
+    background-color: var(--rg-primary-light);
+    border-color: var(--rg-primary-light);
+  }
 }
 
 .status-badge {
@@ -49,41 +74,21 @@ body {
   color: #991b1b;
 }
 
-.btn-primary {
-  background-color: var(--lr-primary);
-  border-color: var(--lr-primary);
-
-  &:hover {
-    background-color: var(--lr-primary-light);
-    border-color: var(--lr-primary-light);
-  }
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
 }
 
-.active-nav-link {
-  background-color: #eff6ff;
-  color: var(--lr-primary) !important;
-  font-weight: 500;
+.modal-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
 }
 
-.nav-link {
-  color: #475569;
-  transition: background-color 0.15s ease;
-
-  &:hover {
-    background-color: #f1f5f9;
-  }
-}
-
-.dropzone {
-  border: 2px dashed var(--lr-border);
-  border-radius: 0.75rem;
-  padding: 3rem 2rem;
-  text-align: center;
-  background-color: white;
-  transition: all 0.15s ease;
-
-  &.dropzone-active {
-    border-color: var(--lr-accent);
-    background-color: #f0fdfa;
-  }
+.card-body h3 {
+  font-weight: 700;
 }
