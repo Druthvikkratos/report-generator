@@ -1,0 +1,62 @@
+<h4 class="mb-4">Dashboard</h4>
+
+@if (loading()) {
+  <div class="d-flex justify-content-center py-5">
+    <div class="spinner-border text-primary"></div>
+  </div>
+} @else {
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-muted small mb-1">Active Templates</p>
+          <h3 class="mb-0" style="color: var(--lr-primary, #1e3a5f);">{{ activeTemplateCount }} / {{ templates().length }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-muted small mb-1">Total Runs</p>
+          <h3 class="mb-0">{{ stats.total }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-muted small mb-1">Successful</p>
+          <h3 class="mb-0 text-success">{{ stats.success }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <p class="text-muted small mb-1">Failed</p>
+          <h3 class="mb-0 text-danger">{{ stats.failed }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="mb-3">Recent Runs <span class="text-muted small">(live)</span></h5>
+      @if (recentRuns.length === 0) {
+        <p class="text-muted mb-0">No runs yet.</p>
+      } @else {
+        <ul class="list-group list-group-flush">
+          @for (run of recentRuns; track run.id) {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ run.reportTemplate?.name || '—' }}</span>
+              <span class="badge" [class.bg-success]="run.status === 'SUCCESS'" [class.bg-danger]="run.status === 'FAILED'" [class.bg-warning]="run.status === 'PENDING'">
+                {{ run.status }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+}

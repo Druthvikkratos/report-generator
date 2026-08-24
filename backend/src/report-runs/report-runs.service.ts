@@ -58,4 +58,14 @@ export class ReportRunsService {
     const fileName = run.filePath.split(/[\\/]/).pop() || 'report';
     return { filePath: run.filePath, fileName };
   }
+
+  async getStats(){
+    const [total, sucess, failed, pending] = await Promise.all([
+      this.prismaService.reportRun.count(),
+      this.prismaService.reportRun.count({where: {status: 'SUCCESS'}}),
+      this.prismaService.reportRun.count({where: {status: 'FAILED'}}),
+      this.prismaService.reportRun.count({where: {status: 'PENDING'}})
+    ])
+    return {total, sucess, failed, pending}
+  }
 }

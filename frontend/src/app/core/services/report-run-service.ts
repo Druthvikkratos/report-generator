@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../envirorments/environment';
 import { Observable } from 'rxjs';
 import { ReportRun } from '../models/report-run.model';
+import { RunStats } from '../models/dashboard-stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +18,9 @@ export class ReportRunService {
 
   getDownloadUrl(runId: string): string{
     return `${this.baseUrl}/${runId}/download`
+  }
+
+  getStats(): Observable<RunStats>{
+    return this.http.get<RunStats>(`${this.baseUrl}/stats/summary`)
   }
 }

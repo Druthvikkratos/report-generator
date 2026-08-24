@@ -27,4 +27,9 @@ export class ReportRunsController {
     const fileStream = createReadStream(filePath);
     fileStream.pipe(res);
   }
+
+  @Get('stats/summary')
+  async getStats() {
+    return this.reportRunService.getStats();
+  }
 }
